@@ -1,0 +1,7 @@
+<main style="padding:20px;font-family:system-ui;">
+  <h1>Hello from Angular 👋</h1>
+  <p>To jest minimalna aplikacja Angular uruchamiana w kontenerze Nginx.</p>
+  <p>Backend FastAPI: <code>GET http://localhost:8000/hello</code></p>
+  <button (click)="ping()">Pobierz wiadomość z backendu</button>
+  <p *ngIf="msg"><strong>Odpowiedź:</strong> {{ msg }}</p>
+</main>
