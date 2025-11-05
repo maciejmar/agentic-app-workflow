@@ -1,12 +1,13 @@
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private base = environment.apiBase; // "/api"
 
-  ping() {
-    return this.http.get(`${environment.apiBase}/health`);
+  hello() {
+    return this.http.get(`${this.base}/hello`, { responseType: 'text' });
   }
 }

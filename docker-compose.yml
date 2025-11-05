@@ -1,5 +1,7 @@
 services:
+  
   backend:
+    profiles: ["dev","prod"]
     build:
       context: ./backend
     container_name: hello-backend
@@ -12,32 +14,43 @@ services:
       retries: 10
 
   frontend:
+    profiles: ["prod"]
     build:
       context: ./frontend
     container_name: hello-frontend
     ports:
-      - "4200:80" # nginx słucha na 80 w kontenerze
+      - "4200:80" # nginx w kontenerze słucha na 80
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/ | grep -qi '<!doctype html>'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
   frontend-dev:
+    profiles: ["dev"]
     image: node:20-alpine
     container_name: hello-frontend-dev
     working_dir: /app
     ports:
-      - "4300:4200"
+      - "4300:4200"   # dev przez ng serve
     environment:
-      CHOKIDAR_USEPOLLING: "true"   # stabilniejsze watch na Windows
+      CHOKIDAR_USEPOLLING: "true"
       NG_CLI_ANALYTICS: "false"
     volumes:
       - ./frontend:/app
       - node_modules:/app/node_modules
-    command: ["sh","-lc","set -e; npm install --no-fund --no-audit && npx ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json"]
-
+    command:
+      - sh
+      - -lc
+      - |
+        set -e
+        npm install --no-fund --no-audit
+        npm run start
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
 
 volumes:
   node_modules:
@@ -45,3 +58,5 @@ volumes:
 networks:
   default:
     name: hello-stack
+
+

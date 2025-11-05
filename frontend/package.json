@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "ng serve --host 0.0.0.0 --port 4200",
+    "start": "ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,html,css,scss}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,css,scss}\""
   },
   "dependencies": {
     "@angular/animations": "^18.2.0",
@@ -23,18 +27,18 @@
     "@angular-devkit/build-angular": "^18.2.0",
     "@angular/cli": "^18.2.0",
     "@angular/compiler-cli": "^18.2.0",
-    "typescript": "~5.5.0",
-    "eslint": "^9.11.1",
-    "prettier": "^3.3.3",
     "@angular-eslint/builder": "^18.3.1",
     "@angular-eslint/eslint-plugin": "^18.3.1",
     "@angular-eslint/eslint-plugin-template": "^18.3.1",
     "@angular-eslint/schematics": "^18.3.1",
     "@angular-eslint/template-parser": "^18.3.1",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.8.3",
     "eslint-plugin-prefer-arrow": "^1.2.3",
+    "prettier": "^3.3.3",
+    "typescript": "~5.5.0",
     "typescript-eslint": "^8.8.1"
   }
 }
